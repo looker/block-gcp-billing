@@ -1,4 +1,4 @@
-connection: "gcp_logging"
+connection: "@{CONNECTION_NAME}"
 
 include: "*.view.lkml"         # include all views in this project
 include: "billing.dashboard.lookml"  # include all dashboards in this project
