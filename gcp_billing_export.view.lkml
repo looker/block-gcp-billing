@@ -241,3 +241,110 @@ view: gcp_billing_export {
     sql: ${gcp_billing_export_usage.usage} ;;
   }
 }
+
+view: gcp_billing_export_credits {
+  dimension: credit_amount {
+    group_label: "Credits"
+    description: "The amount of credit given to account"
+    type: number
+    sql: ${TABLE}.amount ;;
+  }
+
+  dimension: credit_name {
+    group_label: "Credits"
+    description: "Nmae of the credit applied to account"
+    type: string
+    sql: ${TABLE}.name ;;
+  }
+
+  dimension: credit_id {
+    primary_key: yes
+#     hidden: yes
+    sql: CONCAT(CAST(${gcp_billing_export.pk} as STRING), ${credit_name}) ;;
+  }
+}
+
+view: gcp_billing_export_labels {
+  dimension: label_key {
+    group_label: "Labels"
+    type: string
+    sql: ${TABLE}.key ;;
+  }
+
+  dimension: label_value {
+    group_label: "Labels"
+    type: string
+    sql: ${TABLE}.value ;;
+  }
+
+  dimension: label_id {
+    primary_key: yes
+    hidden: yes
+    sql: CONCAT(CAST(${gcp_billing_export.pk} as STRING), ${label_key}, ${label_value}) ;;
+  }
+}
+
+view: gcp_billing_export_project {
+  dimension: id {
+    primary_key: yes
+    type: string
+    sql: ${TABLE}.id ;;
+  }
+
+  dimension: labels {
+    hidden: yes
+    sql: ${TABLE}.labels ;;
+  }
+
+  dimension: name {
+    label: "Project Name"
+    type: string
+    sql: ${TABLE}.name;;
+    drill_fields: [gcp_billing_export_service.description, gcp_billing_export.sku_category, gcp_billing_export_sku.description]
+  }
+}
+
+view: gcp_billing_export_service {
+  dimension: id {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.id ;;
+  }
+
+  dimension: description {
+    label: "Service"
+    type: string
+    sql: ${TABLE}.description ;;
+    drill_fields: [gcp_billing_export_project.name, gcp_billing_export.sku_category, gcp_billing_export_sku.description]
+  }
+}
+
+view: gcp_billing_export_sku {
+  dimension: id {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.id ;;
+  }
+
+  dimension: description {
+    label: "SKU"
+    description: "The most granular level of detail"
+    type: string
+    sql: ${TABLE}.description ;;
+  }
+}
+
+view: gcp_billing_export_usage {
+  dimension: usage {
+    group_label: "Resource Usage"
+    type: number
+    sql: ${TABLE}.amount ;;
+  }
+
+  dimension: unit {
+    group_label: "Resource Usage"
+    label: "Resource"
+    type: string
+    sql: ${TABLE}.unit ;;
+  }
+}
