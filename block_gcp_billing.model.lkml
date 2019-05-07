@@ -42,4 +42,14 @@ explore: gcp_billing_export {
     relationship: one_to_one
     sql: LEFT JOIN UNNEST([${gcp_billing_export.sku}]) AS gcp_billing_export_sku ;;
   }
+
+  join: project_name_sort {
+    relationship: many_to_one
+    sql_on: ${gcp_billing_export_project.name} = ${project_name_sort.name}  ;;
+  }
+
+  join: service_name_sort {
+    relationship: many_to_one
+    sql_on: ${gcp_billing_export_service.description} = ${service_name_sort.name} ;;
+  }
 }
