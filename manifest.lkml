@@ -4,7 +4,7 @@ constant: CONNECTION_NAME {
   value: "gcp_logging"
 }
 
-constant: BILLING_EXPORT_SCHEMA_NAME {
+constant: SCHEMA_NAME {
   value: "gcp_logs"
 }
 
