@@ -1,11 +1,7 @@
-connection: "@{CONNECTION_NAME}"
-
-include: "*.view.lkml"         # include all views in this project
-include: "billing.dashboard.lookml"  # include all dashboards in this project
-
-explore: gcp_billing_export {
+explore: gcp_billing_export_core {
   view_label: "GCP Billing"
   label: "GCP Billing"
+  extension: required
 
   join: gcp_billing_export_project {
     view_label: "GCP Billing"

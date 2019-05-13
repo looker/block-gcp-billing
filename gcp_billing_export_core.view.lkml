@@ -1,4 +1,4 @@
-view: gcp_billing_export {
+view: gcp_billing_export_core {
   derived_table: {
     sql:
       SELECT
@@ -242,7 +242,7 @@ view: gcp_billing_export {
   }
 }
 
-view: gcp_billing_export_credits {
+view: gcp_billing_export_credits_core {
   dimension: credit_amount {
     group_label: "Credits"
     description: "The amount of credit given to account"
@@ -264,7 +264,7 @@ view: gcp_billing_export_credits {
   }
 }
 
-view: gcp_billing_export_labels {
+view: gcp_billing_export_labels_core {
   dimension: label_key {
     group_label: "Labels"
     type: string
@@ -284,7 +284,7 @@ view: gcp_billing_export_labels {
   }
 }
 
-view: gcp_billing_export_project {
+view: gcp_billing_export_project_core {
   dimension: id {
     primary_key: yes
     type: string
@@ -304,7 +304,7 @@ view: gcp_billing_export_project {
   }
 }
 
-view: gcp_billing_export_service {
+view: gcp_billing_export_service_core {
   dimension: id {
     hidden: yes
     type: string
@@ -319,7 +319,7 @@ view: gcp_billing_export_service {
   }
 }
 
-view: gcp_billing_export_sku {
+view: gcp_billing_export_sku_core {
   dimension: id {
     hidden: yes
     type: string
@@ -334,7 +334,7 @@ view: gcp_billing_export_sku {
   }
 }
 
-view: gcp_billing_export_usage {
+view: gcp_billing_export_usage_core {
   dimension: usage {
     group_label: "Resource Usage"
     type: number
@@ -351,7 +351,7 @@ view: gcp_billing_export_usage {
 
 ################## SORT DERIVED TABLES USED FOR STACKED VIZ'S ##################
 
-view: project_name_sort {
+view: project_name_sort_core {
   derived_table: {
     explore_source: gcp_billing_export {
       column: name { field: gcp_billing_export_project.name }
@@ -400,7 +400,7 @@ view: project_name_sort {
   }
 }
 
-view: service_name_sort {
+view: service_name_sort_core {
   derived_table: {
     explore_source: gcp_billing_export {
       column: name { field: gcp_billing_export_service.description }
