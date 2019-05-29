@@ -386,6 +386,7 @@ view: project_name_sort_core {
                ELSE 'Other'
                END;;
     hidden: no
+    order_by_field: rank_10
   }
   dimension: total_cost {
     label: "Total Cost"
@@ -394,9 +395,18 @@ view: project_name_sort_core {
     type: number
     hidden: yes
   }
+
   dimension: rank {
     type: number
     hidden: yes
+  }
+
+  dimension: rank_10 {
+    type:  number
+    hidden:  yes
+    sql:  CASE WHEN ${TABLE}.rank <= 10 THEN ${TABLE}.rank
+          ELSE 11
+          END ;;
   }
 }
 
@@ -435,6 +445,7 @@ view: service_name_sort_core {
                ELSE 'Other'
                END;;
     hidden: no
+    order_by_field: rank_10
   }
   dimension: total_cost {
     label: "Total Cost"
@@ -446,5 +457,13 @@ view: service_name_sort_core {
   dimension: rank {
     type: number
     hidden: yes
+  }
+
+  dimension: rank_10 {
+    type:  number
+    hidden:  yes
+    sql:  CASE WHEN ${TABLE}.rank <= 10 THEN ${TABLE}.rank
+    ELSE 11
+    END ;;
   }
 }
