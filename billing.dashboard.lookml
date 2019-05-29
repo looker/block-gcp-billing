@@ -2,6 +2,109 @@
   title: Billing
   layout: newspaper
   elements:
+  - title: Total Billing (Last Month)
+    name: Total Billing (Last Month)
+    model: block_gcp_billing
+    explore: gcp_billing_export
+    type: single_value
+    fields: [gcp_billing_export.total_cost]
+    filters:
+      gcp_billing_export.usage_start_date: last month
+    sorts: [gcp_billing_export.total_cost desc]
+    limit: 500
+    column_limit: 50
+    dynamic_fields: [{table_calculation: budget, label: Budget, expression: '750',
+        value_format: !!null '', value_format_name: gbp_0, _kind_hint: dimension,
+        _type_hint: number}]
+    custom_color_enabled: false
+    custom_color: forestgreen
+    show_single_value_title: true
+    show_comparison: true
+    comparison_type: progress_percentage
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    listen:
+      Project: gcp_billing_export_project.name
+      Service: gcp_billing_export_service.description
+    row: 0
+    col: 12
+    width: 6
+    height: 6
+  - title: Total Billing (This Month)
+    name: Total Billing (This Month)
+    model: block_gcp_billing
+    explore: gcp_billing_export
+    type: single_value
+    fields: [gcp_billing_export.total_cost]
+    filters:
+      gcp_billing_export.usage_start_date: 1 months
+    sorts: [gcp_billing_export.total_cost desc]
+    limit: 500
+    column_limit: 50
+    dynamic_fields: [{table_calculation: budget, label: Budget, expression: '750',
+        value_format: !!null '', value_format_name: gbp_0, _kind_hint: dimension,
+        _type_hint: number}]
+    custom_color_enabled: false
+    custom_color: forestgreen
+    show_single_value_title: true
+    show_comparison: true
+    comparison_type: progress_percentage
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    listen:
+      Project: gcp_billing_export_project.name
+      Service: gcp_billing_export_service.description
+    row: 0
+    col: 0
+    width: 6
+    height: 6
+  - title: Billing (This Year)
+    name: Billing (This Year)
+    model: block_gcp_billing
+    explore: gcp_billing_export
+    type: single_value
+    fields: [gcp_billing_export.total_cost]
+    filters:
+      gcp_billing_export.usage_start_year: 1 years
+    limit: 500
+    column_limit: 50
+    custom_color_enabled: false
+    custom_color: forestgreen
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: true
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    listen:
+      Project: gcp_billing_export_project.name
+      Service: gcp_billing_export_service.description
+    row: 0
+    col: 18
+    width: 6
+    height: 6
   - title: Predicted Total Monthly Costs
     name: Predicted Total Monthly Costs
     model: block_gcp_billing
@@ -166,197 +269,6 @@
     col: 12
     width: 12
     height: 11
-  - title: Billing by Project
-    name: Billing by Project
-    model: block_gcp_billing
-    explore: gcp_billing_export
-    type: looker_column
-    fields: [gcp_billing_export.total_cost, gcp_billing_export.usage_start_date, project_name_sort.top_10_projects]
-    pivots: [project_name_sort.top_10_projects]
-    fill_fields: [gcp_billing_export.usage_start_date]
-    filters:
-      gcp_billing_export.usage_start_date: 30 days
-      gcp_billing_export_project.name: ''
-      gcp_billing_export_service.description: ''
-    sorts: [gcp_billing_export.total_cost desc 0, project_name_sort.name_based_on_rank,
-      project_name_sort.top_10_projects]
-    limit: 500
-    column_limit: 50
-    color_application:
-      collection_id: b43731d5-dc87-4a8e-b807-635bef3948e7
-      palette_id: ccba75a3-58c7-4b9c-a931-4ffc59e79cba
-      options:
-        steps: 5
-        reverse: true
-    x_axis_gridlines: false
-    y_axis_gridlines: false
-    show_view_names: true
-    y_axes: [{label: '', orientation: left, series: [{axisId: datatonic-external-training
-              - gcp_billing_export.total_cost, id: datatonic-external-training - gcp_billing_export.total_cost,
-            name: datatonic-external-training}, {axisId: datatonic-poc-btee - gcp_billing_export.total_cost,
-            id: datatonic-poc-btee - gcp_billing_export.total_cost, name: datatonic-poc-btee},
-          {axisId: datatonic-poc-tfl - gcp_billing_export.total_cost, id: datatonic-poc-tfl
-              - gcp_billing_export.total_cost, name: datatonic-poc-tfl}, {axisId: datatonic-uk-ao-poc
-              - gcp_billing_export.total_cost, id: datatonic-uk-ao-poc - gcp_billing_export.total_cost,
-            name: datatonic-uk-ao-poc}, {axisId: datatonic-uk-intel-benchmark - gcp_billing_export.total_cost,
-            id: datatonic-uk-intel-benchmark - gcp_billing_export.total_cost, name: datatonic-uk-intel-benchmark},
-          {axisId: datatonic-uk-jlp-ml - gcp_billing_export.total_cost, id: datatonic-uk-jlp-ml
-              - gcp_billing_export.total_cost, name: datatonic-uk-jlp-ml}, {axisId: datatonic-uk-jlp-phase-2
-              - gcp_billing_export.total_cost, id: datatonic-uk-jlp-phase-2 - gcp_billing_export.total_cost,
-            name: datatonic-uk-jlp-phase-2}, {axisId: datatonic-uk-sandbox - gcp_billing_export.total_cost,
-            id: datatonic-uk-sandbox - gcp_billing_export.total_cost, name: datatonic-uk-sandbox},
-          {axisId: datatonic-uk-vf-bdp-internal - gcp_billing_export.total_cost, id: datatonic-uk-vf-bdp-internal
-              - gcp_billing_export.total_cost, name: datatonic-uk-vf-bdp-internal},
-          {axisId: datatonic-www-prod - gcp_billing_export.total_cost, id: datatonic-www-prod
-              - gcp_billing_export.total_cost, name: datatonic-www-prod}, {axisId: Other
-              - gcp_billing_export.total_cost, id: Other - gcp_billing_export.total_cost,
-            name: Other}], showLabels: false, showValues: false, unpinAxis: false,
-        tickDensity: default, tickDensityCustom: 5, type: linear}]
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: normal
-    limit_displayed_rows: false
-    hidden_series: []
-    legend_position: center
-    colors: ['palette: Mixed Dark']
-    series_types: {}
-    point_style: none
-    series_colors: {}
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: true
-    show_silhouette: false
-    totals_color: "#808080"
-    show_null_points: true
-    interpolation: linear
-    custom_color_enabled: false
-    custom_color: forestgreen
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    listen: {}
-    row: 6
-    col: 0
-    width: 12
-    height: 11
-  - title: Total Billing (This Month)
-    name: Total Billing (This Month)
-    model: block_gcp_billing
-    explore: gcp_billing_export
-    type: single_value
-    fields: [gcp_billing_export.total_cost]
-    filters:
-      gcp_billing_export.usage_start_date: 1 months
-    sorts: [gcp_billing_export.total_cost desc]
-    limit: 500
-    column_limit: 50
-    dynamic_fields: [{table_calculation: budget, label: Budget, expression: '750',
-        value_format: !!null '', value_format_name: gbp_0, _kind_hint: dimension,
-        _type_hint: number}]
-    custom_color_enabled: false
-    custom_color: forestgreen
-    show_single_value_title: true
-    show_comparison: true
-    comparison_type: progress_percentage
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    listen:
-      Project: gcp_billing_export_project.name
-      Service: gcp_billing_export_service.description
-    row: 0
-    col: 0
-    width: 6
-    height: 6
-  - title: Total Billing (Last Month)
-    name: Total Billing (Last Month)
-    model: block_gcp_billing
-    explore: gcp_billing_export
-    type: single_value
-    fields: [gcp_billing_export.total_cost]
-    filters:
-      gcp_billing_export.usage_start_date: last month
-    sorts: [gcp_billing_export.total_cost desc]
-    limit: 500
-    column_limit: 50
-    dynamic_fields: [{table_calculation: budget, label: Budget, expression: '750',
-        value_format: !!null '', value_format_name: gbp_0, _kind_hint: dimension,
-        _type_hint: number}]
-    custom_color_enabled: false
-    custom_color: forestgreen
-    show_single_value_title: true
-    show_comparison: true
-    comparison_type: progress_percentage
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    listen:
-      Project: gcp_billing_export_project.name
-      Service: gcp_billing_export_service.description
-    row: 0
-    col: 12
-    width: 6
-    height: 6
-  - title: Billing (This Year)
-    name: Billing (This Year)
-    model: block_gcp_billing
-    explore: gcp_billing_export
-    type: single_value
-    fields: [gcp_billing_export.total_cost]
-    filters:
-      gcp_billing_export.usage_start_year: 1 years
-    limit: 500
-    column_limit: 50
-    custom_color_enabled: false
-    custom_color: forestgreen
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
-    listen:
-      Project: gcp_billing_export_project.name
-      Service: gcp_billing_export_service.description
-    row: 0
-    col: 18
-    width: 6
-    height: 6
   - title: Billing by Month
     name: Billing by Month
     model: block_gcp_billing
@@ -395,6 +307,7 @@
     stacking: ''
     limit_displayed_rows: false
     legend_position: center
+    label_value_format: ''
     series_types: {}
     point_style: none
     series_colors:
@@ -417,16 +330,96 @@
     col: 0
     width: 24
     height: 8
+  - title: Top 10 Billing by Service (This Month)
+    name: Top 10 Billing by Service (This Month)
+    model: block_gcp_billing
+    explore: gcp_billing_export
+    type: looker_bar
+    fields: [gcp_billing_export.total_cost, service_name_sort.top_10_services]
+    filters:
+      gcp_billing_export.usage_start_date: 1 months
+    sorts: [gcp_billing_export.total_cost desc]
+    column_limit: 50
+    color_application:
+      collection_id: b43731d5-dc87-4a8e-b807-635bef3948e7
+      palette_id: fb7bb53e-b77b-4ab6-8274-9d420d3d73f3
+      options:
+        steps: 5
+    x_axis_gridlines: false
+    y_axis_gridlines: false
+    show_view_names: false
+    y_axes: [{label: '', orientation: bottom, series: [{axisId: gcp_billing_export.total_cost,
+            id: gcp_billing_export.total_cost, name: GCP Billing Total Cost}], showLabels: false,
+        showValues: false, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
+        type: linear}]
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: true
+    limit_displayed_rows_values:
+      show_hide: show
+      first_last: first
+      num_rows: '11'
+    hidden_series: []
+    legend_position: center
+    colors: ['palette: Mixed Dark']
+    series_types: {}
+    point_style: none
+    series_colors:
+      gcp_billing_export.total_cost: "#4276BE"
+    show_value_labels: true
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: gray
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_null_points: true
+    interpolation: linear
+    custom_color_enabled: false
+    custom_color: forestgreen
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    hidden_fields:
+    listen:
+      Project: gcp_billing_export_project.name
+      Service: gcp_billing_export_service.description
+    row: 17
+    col: 12
+    width: 12
+    height: 8
   - title: Top 10 Billing by Project (This Month)
     name: Top 10 Billing by Project (This Month)
     model: block_gcp_billing
     explore: gcp_billing_export
     type: looker_bar
-    fields: [gcp_billing_export_project.name, gcp_billing_export.total_cost]
+    fields: [project_name_sort.top_10_projects, gcp_billing_export.total_cost]
     filters:
       gcp_billing_export.usage_start_date: 1 months
-    sorts: [gcp_billing_export.total_cost desc, gcp_billing_export_project.name]
-    limit: 10
+    sorts: [project_name_sort.top_10_projects]
     column_limit: 50
     color_application:
       collection_id: b43731d5-dc87-4a8e-b807-635bef3948e7
@@ -452,14 +445,19 @@
     plot_size_by_field: false
     trellis: ''
     stacking: ''
-    limit_displayed_rows: false
+    limit_displayed_rows: true
+    limit_displayed_rows_values:
+      show_hide: show
+      first_last: first
+      num_rows: '11'
     hidden_series: []
     legend_position: center
     colors: ['palette: Mixed Dark']
     series_types: {}
     point_style: none
     series_colors:
-      gcp_billing_export.total_cost: "#4276BE"
+      gcp_billing_export.total_cost: "#72D16D"
+      total_cost: "#4276BE"
     show_value_labels: true
     label_density: 25
     label_color: []
@@ -488,6 +486,7 @@
     comparison_type: value
     comparison_reverse_colors: false
     show_comparison_label: true
+    hidden_fields:
     listen:
       Project: gcp_billing_export_project.name
       Service: gcp_billing_export_service.description
@@ -495,29 +494,64 @@
     col: 0
     width: 12
     height: 8
-  - title: Top 10 Billing by Service (This Month)
-    name: Top 10 Billing by Service (This Month)
+  - title: Billing by Project
+    name: Billing by Project
     model: block_gcp_billing
     explore: gcp_billing_export
-    type: looker_bar
-    fields: [gcp_billing_export.total_cost, gcp_billing_export_service.description]
+    type: looker_column
+    fields: [gcp_billing_export.total_cost, gcp_billing_export.usage_start_date, project_name_sort.top_10_projects]
+    pivots: [project_name_sort.top_10_projects]
+    fill_fields: [gcp_billing_export.usage_start_date]
     filters:
-      gcp_billing_export.usage_start_date: 1 months
-    sorts: [gcp_billing_export.total_cost desc]
-    limit: 10
+      gcp_billing_export.usage_start_date: 60 days
+      gcp_billing_export_project.name: ''
+      gcp_billing_export_service.description: ''
+    sorts: [project_name_sort.top_10_projects 0, gcp_billing_export.usage_start_date
+        desc]
+    limit: 500
     column_limit: 50
+    dynamic_fields: [{table_calculation: total_cost_30_days_ago, label: Total Cost
+          30 Days Ago, expression: 'offset(if(row() > 30, sum(pivot_row(coalesce(${gcp_billing_export.total_cost},0))),
+          null), 30)', value_format: !!null '', value_format_name: decimal_2, _kind_hint: supermeasure,
+        _type_hint: number}]
     color_application:
       collection_id: b43731d5-dc87-4a8e-b807-635bef3948e7
-      palette_id: fb7bb53e-b77b-4ab6-8274-9d420d3d73f3
+      palette_id: ccba75a3-58c7-4b9c-a931-4ffc59e79cba
       options:
         steps: 5
+        reverse: true
     x_axis_gridlines: false
     y_axis_gridlines: false
-    show_view_names: false
-    y_axes: [{label: '', orientation: bottom, series: [{axisId: gcp_billing_export.total_cost,
-            id: gcp_billing_export.total_cost, name: GCP Billing Total Cost}], showLabels: false,
-        showValues: false, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
-        type: linear}]
+    show_view_names: true
+    y_axes: [{label: '', orientation: left, series: [{axisId: datatonic-uk-jlp-phase-2
+              - 1 - gcp_billing_export.total_cost, id: datatonic-uk-jlp-phase-2 -
+              1 - gcp_billing_export.total_cost, name: datatonic-uk-jlp-phase-2 -
+              GCP Billing Total Cost}, {axisId: datatonic-uk-sandbox - 2 - gcp_billing_export.total_cost,
+            id: datatonic-uk-sandbox - 2 - gcp_billing_export.total_cost, name: datatonic-uk-sandbox
+              - GCP Billing Total Cost}, {axisId: datatonic-uk-vf-bdp-internal - 3
+              - gcp_billing_export.total_cost, id: datatonic-uk-vf-bdp-internal -
+              3 - gcp_billing_export.total_cost, name: datatonic-uk-vf-bdp-internal
+              - GCP Billing Total Cost}, {axisId: datatonic-uk-jlp-ml - 4 - gcp_billing_export.total_cost,
+            id: datatonic-uk-jlp-ml - 4 - gcp_billing_export.total_cost, name: datatonic-uk-jlp-ml
+              - GCP Billing Total Cost}, {axisId: datatonic-uk-ao-poc - 5 - gcp_billing_export.total_cost,
+            id: datatonic-uk-ao-poc - 5 - gcp_billing_export.total_cost, name: datatonic-uk-ao-poc
+              - GCP Billing Total Cost}, {axisId: datatonic-www-prod - 6 - gcp_billing_export.total_cost,
+            id: datatonic-www-prod - 6 - gcp_billing_export.total_cost, name: datatonic-www-prod
+              - GCP Billing Total Cost}, {axisId: datatonic-poc-btee - 7 - gcp_billing_export.total_cost,
+            id: datatonic-poc-btee - 7 - gcp_billing_export.total_cost, name: datatonic-poc-btee
+              - GCP Billing Total Cost}, {axisId: datatonic-poc-tfl - 8 - gcp_billing_export.total_cost,
+            id: datatonic-poc-tfl - 8 - gcp_billing_export.total_cost, name: datatonic-poc-tfl
+              - GCP Billing Total Cost}, {axisId: datatonic-uk-intel-benchmark - 9
+              - gcp_billing_export.total_cost, id: datatonic-uk-intel-benchmark -
+              9 - gcp_billing_export.total_cost, name: datatonic-uk-intel-benchmark
+              - GCP Billing Total Cost}, {axisId: datatonic-external-training - 10
+              - gcp_billing_export.total_cost, id: datatonic-external-training - 10
+              - gcp_billing_export.total_cost, name: datatonic-external-training -
+              GCP Billing Total Cost}, {axisId: Other - 11 - gcp_billing_export.total_cost,
+            id: Other - 11 - gcp_billing_export.total_cost, name: Other - GCP Billing
+              Total Cost}, {axisId: total_cost_30_days_ago, id: total_cost_30_days_ago,
+            name: Total Cost 30 Days Ago}], showLabels: true, showValues: true, unpinAxis: false,
+        tickDensity: default, type: linear}]
     show_y_axis_labels: true
     show_y_axis_ticks: true
     y_axis_tick_density: default
@@ -529,33 +563,29 @@
     y_axis_reversed: false
     plot_size_by_field: false
     trellis: ''
-    stacking: ''
-    limit_displayed_rows: false
+    stacking: normal
+    limit_displayed_rows: true
+    limit_displayed_rows_values:
+      show_hide: show
+      first_last: first
+      num_rows: '30'
     hidden_series: []
+    hide_legend: false
     legend_position: center
     colors: ['palette: Mixed Dark']
-    series_types: {}
+    series_types:
+      total_cost_30_days_ago: area
     point_style: none
-    series_colors:
-      gcp_billing_export.total_cost: "#4276BE"
-    show_value_labels: true
+    series_colors: {}
+    show_value_labels: false
     label_density: 25
     x_axis_scale: auto
     y_axis_combined: true
     ordering: none
     show_null_labels: false
-    show_totals_labels: false
+    show_totals_labels: true
     show_silhouette: false
     totals_color: "#808080"
-    show_row_numbers: false
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: gray
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
     show_null_points: true
     interpolation: linear
     custom_color_enabled: false
@@ -565,13 +595,12 @@
     comparison_type: value
     comparison_reverse_colors: false
     show_comparison_label: true
-    listen:
-      Project: gcp_billing_export_project.name
-      Service: gcp_billing_export_service.description
-    row: 17
-    col: 12
+    hidden_fields: [total_cost_30_days_ago]
+    listen: {}
+    row: 6
+    col: 0
     width: 12
-    height: 8
+    height: 11
   filters:
   - name: Service
     title: Service
