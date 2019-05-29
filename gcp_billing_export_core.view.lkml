@@ -10,10 +10,62 @@ view: gcp_billing_export_core {
         {% condition date_filter %} _PARTITIONTIME {% endcondition %} ;;
   }
 
+#   ### BELOW Arbitrary Period Comparison Analytical Pattern https://discourse.looker.com/t/arbitrary-period-comparisons/8019
+#
+#   filter: first_period_selector {
+#     group_label: "Arbitrary Period Comparisons"
+#     description: "Set date range to compare to 'Second Period Selector'"
+#     type: date
+#   }
+#
+#   filter: second_period_selector {
+#     group_label: "Arbitrary Period Comparisons"
+#     description: "Set date range to compare to 'First Period Selector'"
+#     type: date
+#   }
+#
+#   dimension: days_from_start_first {
+#     hidden:  yes
+#     type:  number
+#     sql:  DATE_DIFF(${usage_start_date}, CAST({% date_start first_period_selector %} AS DATE), DAY) ;;
+#   }
+#
+#   dimension: days_from_start_second {
+#     hidden:  yes
+#     type:  number
+#     sql:  DATE_DIFF(${usage_start_date}, CAST({% date_start second_period_selector %} AS DATE), DAY) ;;
+#   }
+#
+#   dimension: days_from_first_period {
+#     type: number
+#     sql: CASE
+#             WHEN ${days_from_start_first} >= 0
+#             THEN ${days_from_start_first}
+#             WHEN ${days_from_start_second} >=0
+#             THEN ${days_from_start_second}
+#             END
+#             ;;
+#   }
+#
+#   dimension: period_selected {
+#     group_label: "Arbitrary Period Comparisons"
+#     description: "Pivot by this dimension to see First vs Second Period Series"
+#     type:  string
+#     sql:  CASE
+#             WHEN ${usage_start_raw} >= {% date_start first_period_selector %}
+#             AND ${usage_start_raw} <= {% date_end first_period_selector %}
+#             THEN 'First Period'
+#             WHEN ${usage_start_raw} >= {% date_start second_period_selector %}
+#             AND ${usage_start_raw} <= {% date_end second_period_selector %}
+#             THEN 'Second Period'
+#             END;;
+#   }
+#
+#   ### ABOVE Arbitrary Period Comparison Analytical Pattern https://discourse.looker.com/t/arbitrary-period-comparisons/8019
+
   filter: date_filter {
     type: date
   }
-
 
   parameter: date_view {
     type: unquoted
@@ -357,7 +409,7 @@ view: project_name_sort_core {
       column: name { field: gcp_billing_export_project.name }
       column: total_cost {}
       derived_column: rank {
-        sql: RANK() OVER (ORDER BY total_cost DESC) ;;
+        sql: RANK() OVER (ORDER BY COALESCE(total_cost, 0) DESC) ;;
       }
 
 
@@ -416,7 +468,7 @@ view: service_name_sort_core {
       column: name { field: gcp_billing_export_service.description }
       column: total_cost {}
       derived_column: rank {
-        sql: RANK() OVER (ORDER BY total_cost DESC) ;;
+        sql: RANK() OVER (ORDER BY COALESCE(total_cost, 0) DESC) ;;
       }
 
 
