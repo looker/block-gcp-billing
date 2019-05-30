@@ -354,6 +354,15 @@ view: gcp_billing_export_project_core {
     sql: ${TABLE}.name;;
     drill_fields: [gcp_billing_export_service.description, gcp_billing_export.sku_category, gcp_billing_export_sku.description]
   }
+
+  measure: name_filter { #Made for single value visualization
+    type: string
+    sql: {% if name._is_filtered %}
+        STRING_AGG(DISTINCT ${name}, ", ")
+       {% else %}
+        ANY_VALUE("All Projects")
+       {% endif %};;
+  }
 }
 
 view: gcp_billing_export_service_core {
@@ -412,7 +421,10 @@ view: project_name_sort_core {
         sql: RANK() OVER (ORDER BY COALESCE(total_cost, 0) DESC) ;;
       }
 
-
+      bind_filters: {
+        to_field: gcp_billing_export.date_filter
+        from_field: gcp_billing_export.date_filter
+      }
       bind_filters: {
         to_field: gcp_billing_export.usage_start_date
         from_field: gcp_billing_export.usage_start_date
@@ -456,7 +468,7 @@ view: project_name_sort_core {
   dimension: rank_10 {
     type:  number
     hidden:  yes
-    sql:  CASE WHEN ${TABLE}.rank <= 10 THEN ${TABLE}.rank
+    sql:  CASE WHEN ${rank} <= 10 THEN ${rank}
           ELSE 11
           END ;;
   }
@@ -471,7 +483,10 @@ view: service_name_sort_core {
         sql: RANK() OVER (ORDER BY COALESCE(total_cost, 0) DESC) ;;
       }
 
-
+      bind_filters: {
+        to_field: gcp_billing_export.date_filter
+        from_field: gcp_billing_export.date_filter
+      }
       bind_filters: {
         to_field: gcp_billing_export.usage_start_date
         from_field: gcp_billing_export.usage_start_date
@@ -486,6 +501,7 @@ view: service_name_sort_core {
       }
     }
   }
+
   dimension: name {
     label: "Service Name"
     primary_key: yes
@@ -514,7 +530,7 @@ view: service_name_sort_core {
   dimension: rank_10 {
     type:  number
     hidden:  yes
-    sql:  CASE WHEN ${TABLE}.rank <= 10 THEN ${TABLE}.rank
+    sql:  CASE WHEN ${rank} <= 10 THEN ${rank}
     ELSE 11
     END ;;
   }
