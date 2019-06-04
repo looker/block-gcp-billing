@@ -150,7 +150,7 @@ view: gcp_billing_export_core {
   measure: net_cost {
       description: "The total cost associated to the SKU, between the Start Date and End Date"
       type: number
-      sql: ${cost} - ${total_credit} ;;
+      sql: ${cost} + ${total_credit} ;;
       value_format_name: decimal_2
       html: {% if currency._value == 'GBP' %}
             <a href="{{ link }}"> £{{ rendered_value }}</a>
