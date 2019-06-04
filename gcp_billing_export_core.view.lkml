@@ -84,6 +84,7 @@ view: gcp_billing_export_core {
     }
   }
 
+
   dimension: is_last_month {
     type: yesno
     sql: ${usage_start_month_num} = EXTRACT(month from CURRENT_TIMESTAMP())-1
@@ -144,6 +145,23 @@ view: gcp_billing_export_core {
             <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
           {% endif %} ;;
     drill_fields: [gcp_billing_export_credits.credit_name,gcp_billing_export_credits.credit_amount]
+  }
+
+  measure: net_cost {
+      description: "The total cost associated to the SKU, between the Start Date and End Date"
+      type: number
+      sql: ${cost} - ${total_credit} ;;
+      value_format_name: decimal_2
+      html: {% if currency._value == 'GBP' %}
+            <a href="{{ link }}"> £{{ rendered_value }}</a>
+          {% elsif currency == 'USD' %}
+            <a href="{{ link }}"> ${{ rendered_value }}</a>
+          {% elsif currency == 'EUR' %}
+            <a href="{{ link }}"> €{{ rendered_value }}</a>
+          {% else %}
+            <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
+          {% endif %} ;;
+      drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
   }
 
   dimension: currency {
@@ -292,6 +310,7 @@ view: gcp_billing_export_core {
     type: sum
     sql: ${gcp_billing_export_usage.usage} ;;
   }
+
 }
 
 view: gcp_billing_export_credits_core {
@@ -363,6 +382,19 @@ view: gcp_billing_export_project_core {
         ANY_VALUE("All Projects")
        {% endif %};;
   }
+
+### test for one-vs-many project tiles
+
+  filter: project_comparison {
+    type: string
+  }
+
+  dimension: project_compare  {
+    type: yesno
+    sql: {% condition project_comparison %} ${name} {% endcondition %} ;;
+  }
+
+  ## end test
 }
 
 view: gcp_billing_export_service_core {
