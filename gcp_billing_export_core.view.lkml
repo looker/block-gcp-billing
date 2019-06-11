@@ -130,6 +130,13 @@ view: gcp_billing_export_core {
     sql: ${TABLE}.credits ;;
   }
 
+  measure: t_cost_hide { #used for NDTs, to avoid circular references in inter-dashboard links
+    hidden: yes
+    type: number
+    sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
+    value_format_name: decimal_2
+  }
+
   measure: total_cost {
       description: "The total cost associated to the SKU with credits applied, between the Start Date and End Date"
       type: number
@@ -145,6 +152,10 @@ view: gcp_billing_export_core {
             <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
           {% endif %} ;;
       drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
+      link: {
+        label: "Project Breakdown"
+        url: "/dashboards/block_gcp_billing::billing_by_project?Project={{ project_name_sort.top_10_projects._value | url_encode }}&Time Period=1 months"
+      }
   }
 
   dimension: currency {
@@ -450,9 +461,9 @@ view: project_name_sort_core {
   derived_table: {
     explore_source: gcp_billing_export {
       column: name { field: gcp_billing_export_project.name }
-      column: total_cost {}
+      column: t_cost_hide {}
       derived_column: rank {
-        sql: RANK() OVER (ORDER BY COALESCE(total_cost, 0) DESC) ;;
+        sql: RANK() OVER (ORDER BY COALESCE(t_cost_hide, 0) DESC) ;;
       }
 
       bind_filters: {
@@ -486,7 +497,7 @@ view: project_name_sort_core {
     hidden: no
     order_by_field: rank_10
   }
-  dimension: total_cost {
+  dimension: t_cost_hide {
     label: "Total Cost"
     description: "The total cost associated to the SKU, between the Start Date and End Date"
     value_format: "#,##0.00"
@@ -512,9 +523,9 @@ view: service_name_sort_core {
   derived_table: {
     explore_source: gcp_billing_export {
       column: name { field: gcp_billing_export_service.description }
-      column: total_cost {}
+      column: t_cost_hide {}
       derived_column: rank {
-        sql: RANK() OVER (ORDER BY COALESCE(total_cost, 0) DESC) ;;
+        sql: RANK() OVER (ORDER BY COALESCE(t_cost_hide, 0) DESC) ;;
       }
 
       bind_filters: {
@@ -549,7 +560,7 @@ view: service_name_sort_core {
     hidden: no
     order_by_field: rank_10
   }
-  dimension: total_cost {
+  dimension: t_cost_hide {
     label: "Total Cost"
     description: "The total cost associated to the SKU, between the Start Date and End Date"
     value_format: "#,##0.00"
