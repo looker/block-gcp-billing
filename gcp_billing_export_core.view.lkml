@@ -10,59 +10,6 @@ view: gcp_billing_export_core {
         {% condition date_filter %} _PARTITIONTIME {% endcondition %} ;;
   }
 
-#   ### BELOW Arbitrary Period Comparison Analytical Pattern https://discourse.looker.com/t/arbitrary-period-comparisons/8019
-#
-#   filter: first_period_selector {
-#     group_label: "Arbitrary Period Comparisons"
-#     description: "Set date range to compare to 'Second Period Selector'"
-#     type: date
-#   }
-#
-#   filter: second_period_selector {
-#     group_label: "Arbitrary Period Comparisons"
-#     description: "Set date range to compare to 'First Period Selector'"
-#     type: date
-#   }
-#
-#   dimension: days_from_start_first {
-#     hidden:  yes
-#     type:  number
-#     sql:  DATE_DIFF(${usage_start_date}, CAST({% date_start first_period_selector %} AS DATE), DAY) ;;
-#   }
-#
-#   dimension: days_from_start_second {
-#     hidden:  yes
-#     type:  number
-#     sql:  DATE_DIFF(${usage_start_date}, CAST({% date_start second_period_selector %} AS DATE), DAY) ;;
-#   }
-#
-#   dimension: days_from_first_period {
-#     type: number
-#     sql: CASE
-#             WHEN ${days_from_start_first} >= 0
-#             THEN ${days_from_start_first}
-#             WHEN ${days_from_start_second} >=0
-#             THEN ${days_from_start_second}
-#             END
-#             ;;
-#   }
-#
-#   dimension: period_selected {
-#     group_label: "Arbitrary Period Comparisons"
-#     description: "Pivot by this dimension to see First vs Second Period Series"
-#     type:  string
-#     sql:  CASE
-#             WHEN ${usage_start_raw} >= {% date_start first_period_selector %}
-#             AND ${usage_start_raw} <= {% date_end first_period_selector %}
-#             THEN 'First Period'
-#             WHEN ${usage_start_raw} >= {% date_start second_period_selector %}
-#             AND ${usage_start_raw} <= {% date_end second_period_selector %}
-#             THEN 'Second Period'
-#             END;;
-#   }
-#
-#   ### ABOVE Arbitrary Period Comparison Analytical Pattern https://discourse.looker.com/t/arbitrary-period-comparisons/8019
-
   filter: date_filter {
     type: date
   }
@@ -305,278 +252,58 @@ view: gcp_billing_export_core {
     sql: ${gcp_billing_export_usage.usage} ;;
   }
 
-}
+#   ### BELOW Arbitrary Period Comparison Analytical Pattern https://discourse.looker.com/t/arbitrary-period-comparisons/8019
+#
+#   filter: first_period_selector {
+#     group_label: "Arbitrary Period Comparisons"
+#     description: "Set date range to compare to 'Second Period Selector'"
+#     type: date
+#   }
+#
+#   filter: second_period_selector {
+#     group_label: "Arbitrary Period Comparisons"
+#     description: "Set date range to compare to 'First Period Selector'"
+#     type: date
+#   }
+#
+#   dimension: days_from_start_first {
+#     hidden:  yes
+#     type:  number
+#     sql:  DATE_DIFF(${usage_start_date}, CAST({% date_start first_period_selector %} AS DATE), DAY) ;;
+#   }
+#
+#   dimension: days_from_start_second {
+#     hidden:  yes
+#     type:  number
+#     sql:  DATE_DIFF(${usage_start_date}, CAST({% date_start second_period_selector %} AS DATE), DAY) ;;
+#   }
+#
+#   dimension: days_from_first_period {
+#     type: number
+#     sql: CASE
+#             WHEN ${days_from_start_first} >= 0
+#             THEN ${days_from_start_first}
+#             WHEN ${days_from_start_second} >=0
+#             THEN ${days_from_start_second}
+#             END
+#             ;;
+#   }
+#
+#   dimension: period_selected {
+#     group_label: "Arbitrary Period Comparisons"
+#     description: "Pivot by this dimension to see First vs Second Period Series"
+#     type:  string
+#     sql:  CASE
+#             WHEN ${usage_start_raw} >= {% date_start first_period_selector %}
+#             AND ${usage_start_raw} <= {% date_end first_period_selector %}
+#             THEN 'First Period'
+#             WHEN ${usage_start_raw} >= {% date_start second_period_selector %}
+#             AND ${usage_start_raw} <= {% date_end second_period_selector %}
+#             THEN 'Second Period'
+#             END;;
+#   }
+#
+#   ### ABOVE Arbitrary Period Comparison Analytical Pattern https://discourse.looker.com/t/arbitrary-period-comparisons/8019
 
-view: gcp_billing_export_credits_core {
-  dimension: credit_amount {
-    group_label: "Credits"
-    description: "The amount of credit given to account"
-    type: number
-    sql: ${TABLE}.amount ;;
-  }
 
-  dimension: credit_name {
-    group_label: "Credits"
-    description: "Name of the credit applied to account"
-    type: string
-    sql: ${TABLE}.name ;;
-  }
-
-  dimension: credit_id {
-    primary_key: yes
-#     hidden: yes
-    sql: CONCAT(CAST(${gcp_billing_export.pk} as STRING), COALESCE(${credit_name}, "0")) ;;
-  }
-
-  measure: total_credit {
-    description: "The total credit given to the billing account (always negative)"
-    type: sum
-    sql: ${credit_amount} ;;
-    value_format_name: decimal_2
-    html: {% if gcp_billing_export.currency._value == 'GBP' %}
-            <a href="{{ link }}"> £{{ rendered_value }}</a>
-          {% elsif gcp_billing_export.currency == 'USD' %}
-            <a href="{{ link }}"> ${{ rendered_value }}</a>
-          {% elsif gcp_billing_export.currency == 'EUR' %}
-            <a href="{{ link }}"> €{{ rendered_value }}</a>
-          {% else %}
-            <a href="{{ link }}"> {{ rendered_value }} {{ gcp_billing_export.currency._value }}</a>
-          {% endif %} ;;
-    drill_fields: [gcp_billing_export_credits.credit_name,gcp_billing_export_credits.credit_amount]
-  }
-
-
-}
-
-view: gcp_billing_export_labels_core {
-  dimension: label_key {
-    group_label: "Labels"
-    type: string
-    sql: ${TABLE}.key ;;
-  }
-
-  dimension: label_value {
-    group_label: "Labels"
-    type: string
-    sql: ${TABLE}.value ;;
-  }
-
-  dimension: label_id {
-    primary_key: yes
-    hidden: yes
-    sql: CONCAT(CAST(${gcp_billing_export.pk} as STRING), ${label_key}, ${label_value}) ;;
-  }
-}
-
-view: gcp_billing_export_project_core {
-  dimension: id {
-    primary_key: yes
-    type: string
-    sql: ${TABLE}.id ;;
-  }
-
-  dimension: labels {
-    hidden: yes
-    sql: ${TABLE}.labels ;;
-  }
-
-  dimension: name {
-    label: "Project Name"
-    type: string
-    sql: ${TABLE}.name;;
-    drill_fields: [gcp_billing_export_service.description, gcp_billing_export.sku_category, gcp_billing_export_sku.description]
-  }
-
-  measure: name_filter { #Made for single value visualization
-    type: string
-    sql: {% if name._is_filtered %}
-        STRING_AGG(DISTINCT ${name}, ", ")
-       {% else %}
-        ANY_VALUE("All Projects")
-       {% endif %};;
-  }
-
-### test for one-vs-many project tiles
-
-  filter: project_comparison {
-    type: string
-  }
-
-  dimension: project_compare  {
-    type: yesno
-    sql: {% condition project_comparison %} ${name} {% endcondition %} ;;
-  }
-
-  ## end test
-}
-
-view: gcp_billing_export_service_core {
-  dimension: id {
-    hidden: yes
-    type: string
-    sql: ${TABLE}.id ;;
-  }
-
-  dimension: description {
-    label: "Service"
-    type: string
-    sql: ${TABLE}.description ;;
-    drill_fields: [gcp_billing_export_project.name, gcp_billing_export.sku_category, gcp_billing_export_sku.description]
-  }
-}
-
-view: gcp_billing_export_sku_core {
-  dimension: id {
-    hidden: yes
-    type: string
-    sql: ${TABLE}.id ;;
-  }
-
-  dimension: description {
-    label: "SKU"
-    description: "The most granular level of detail"
-    type: string
-    sql: ${TABLE}.description ;;
-  }
-}
-
-view: gcp_billing_export_usage_core {
-  dimension: usage {
-    group_label: "Resource Usage"
-    type: number
-    sql: ${TABLE}.amount ;;
-  }
-
-  dimension: unit {
-    group_label: "Resource Usage"
-    label: "Resource"
-    type: string
-    sql: ${TABLE}.unit ;;
-  }
-}
-
-################## SORT DERIVED TABLES USED FOR STACKED VIZ'S ##################
-
-view: project_name_sort_core {
-  derived_table: {
-    explore_source: gcp_billing_export {
-      column: name { field: gcp_billing_export_project.name }
-      column: t_cost_hide {}
-      derived_column: rank {
-        sql: RANK() OVER (ORDER BY COALESCE(t_cost_hide, 0) DESC) ;;
-      }
-
-      bind_filters: {
-        to_field: gcp_billing_export.date_filter
-        from_field: gcp_billing_export.date_filter
-      }
-      bind_filters: {
-        to_field: gcp_billing_export.usage_start_date
-        from_field: gcp_billing_export.usage_start_date
-      }
-      bind_filters: {
-        to_field: gcp_billing_export_project.name
-        from_field: gcp_billing_export_project.name
-      }
-      bind_filters: {
-        to_field: gcp_billing_export_service.description
-        from_field: gcp_billing_export_service.description
-      }
-    }
-  }
-  dimension: name {
-    label: "Project Name"
-    primary_key: yes
-    hidden: yes
-  }
-  dimension: top_10_projects {
-    description: "If a project is within the Top 10 based in total cost, then its individual name appears in the dimension output. Otherwise, it's bucketed into the 'Other' section."
-    sql:  CASE WHEN ${rank} <= 10 THEN ${name}
-               ELSE 'Other'
-               END;;
-    hidden: no
-    order_by_field: rank_10
-  }
-  dimension: t_cost_hide {
-    label: "Total Cost"
-    description: "The total cost associated to the SKU, between the Start Date and End Date"
-    value_format: "#,##0.00"
-    type: number
-    hidden: yes
-  }
-
-  dimension: rank {
-    type: number
-    hidden: yes
-  }
-
-  dimension: rank_10 {
-    type:  number
-    hidden:  yes
-    sql:  CASE WHEN ${rank} <= 10 THEN ${rank}
-          ELSE 11
-          END ;;
-  }
-}
-
-view: service_name_sort_core {
-  derived_table: {
-    explore_source: gcp_billing_export {
-      column: name { field: gcp_billing_export_service.description }
-      column: t_cost_hide {}
-      derived_column: rank {
-        sql: RANK() OVER (ORDER BY COALESCE(t_cost_hide, 0) DESC) ;;
-      }
-
-      bind_filters: {
-        to_field: gcp_billing_export.date_filter
-        from_field: gcp_billing_export.date_filter
-      }
-      bind_filters: {
-        to_field: gcp_billing_export.usage_start_date
-        from_field: gcp_billing_export.usage_start_date
-      }
-      bind_filters: {
-        to_field: gcp_billing_export_project.name
-        from_field: gcp_billing_export_project.name
-      }
-      bind_filters: {
-        to_field: gcp_billing_export_service.description
-        from_field: gcp_billing_export_service.description
-      }
-    }
-  }
-
-  dimension: name {
-    label: "Service Name"
-    primary_key: yes
-    hidden: yes
-  }
-  dimension: top_10_services {
-    description: "If a service is within the Top 10 based in total cost, then its individual name appears in the dimension output. Otherwise, it's bucketed into the 'Other' section."
-    sql:  CASE WHEN ${rank} <= 10 THEN ${name}
-               ELSE 'Other'
-               END;;
-    hidden: no
-    order_by_field: rank_10
-  }
-  dimension: t_cost_hide {
-    label: "Total Cost"
-    description: "The total cost associated to the SKU, between the Start Date and End Date"
-    value_format: "#,##0.00"
-    type: number
-    hidden: yes
-  }
-  dimension: rank {
-    type: number
-    hidden: yes
-  }
-
-  dimension: rank_10 {
-    type:  number
-    hidden:  yes
-    sql:  CASE WHEN ${rank} <= 10 THEN ${rank}
-    ELSE 11
-    END ;;
-  }
 }
