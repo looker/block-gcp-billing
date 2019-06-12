@@ -10,6 +10,8 @@ view: gcp_billing_export_core {
         {% condition date_filter %} _PARTITIONTIME {% endcondition %} ;;
   }
 
+  ### FILTER ONLY FIELDS
+
   filter: date_filter {
     type: date
   }
@@ -31,6 +33,16 @@ view: gcp_billing_export_core {
     }
   }
 
+  ### Field description reference https://cloud.google.com/billing/docs/how-to/export-data-bigquery
+  ### DIMENSIONS
+
+  dimension: pk {
+    type: string
+    primary_key: yes
+    hidden: yes
+    # sql: CONCAT(${billing_account_id},CAST(${usage_start_raw} as STRING),${gcp_billing_export_service.id}, ${gcp_billing_export_sku.id}) ;;
+    sql: ${TABLE}.pk ;;
+  }
 
   dimension: is_last_month {
     type: yesno
@@ -45,6 +57,7 @@ view: gcp_billing_export_core {
   }
 
   dimension: billing_account_id {
+    description: "The billing account ID that the usage is associated with."
     type: string
     sql: ${TABLE}.billing_account_id ;;
   }
@@ -55,54 +68,9 @@ view: gcp_billing_export_core {
     sql: ${TABLE}.cost ;;
   }
 
-  measure: cost_before_credits {
-    description: "The cost associated to an SKU before any credits, between the Start Date and End Date"
-    type: sum
-    sql: ${TABLE}.cost ;;
-    value_format_name: decimal_2
-    html: {% if currency._value == 'GBP' %}
-            <a href="{{ link }}"> £{{ rendered_value }}</a>
-          {% elsif currency == 'USD' %}
-            <a href="{{ link }}"> ${{ rendered_value }}</a>
-          {% elsif currency == 'EUR' %}
-            <a href="{{ link }}"> €{{ rendered_value }}</a>
-          {% else %}
-            <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
-          {% endif %} ;;
-    drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
-  }
-
-  dimension: credits {
+  dimension: credits { # Nested record
     hidden: yes
     sql: ${TABLE}.credits ;;
-  }
-
-  measure: t_cost_hide { #used for NDTs, to avoid circular references in inter-dashboard links
-    hidden: yes
-    type: number
-    sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
-    value_format_name: decimal_2
-  }
-
-  measure: total_cost {
-      description: "The total cost associated to the SKU with credits applied, between the Start Date and End Date"
-      type: number
-      sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
-      value_format_name: decimal_2
-      html: {% if currency._value == 'GBP' %}
-            <a href="{{ link }}"> £{{ rendered_value }}</a>
-          {% elsif currency == 'USD' %}
-            <a href="{{ link }}"> ${{ rendered_value }}</a>
-          {% elsif currency == 'EUR' %}
-            <a href="{{ link }}"> €{{ rendered_value }}</a>
-          {% else %}
-            <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
-          {% endif %} ;;
-      drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
-      link: {
-        label: "Project Breakdown"
-        url: "/dashboards/block_gcp_billing::billing_by_project?Project={{ project_name_sort.top_10_projects._value | url_encode }}&Time Period=1 months"
-      }
   }
 
   dimension: currency {
@@ -112,40 +80,14 @@ view: gcp_billing_export_core {
   }
 
   dimension: currency_conversion_rate {
+    description: "The exchange rate from US dollars to the local currency. That is, cost/currency_conversion_rate is the cost in US dollars."
     type: number
     sql: ${TABLE}.currency_conversion_rate ;;
   }
 
-  dimension_group: export {
-    description: "Time at which the billing was exported"
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      month_name,
-      month_num,
-      week_of_year,
-      day_of_month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}.export_time ;;
-  }
-
-  dimension: labels {
+  dimension: labels { # Nested record
     hidden: yes
     sql: ${TABLE}.labels ;;
-  }
-
-  dimension: pk {
-    type: string
-    primary_key: yes
-    hidden: yes
-    # sql: CONCAT(${billing_account_id},CAST(${usage_start_raw} as STRING),${gcp_billing_export_service.id}, ${gcp_billing_export_sku.id}) ;;
-    sql: ${TABLE}.pk ;;
   }
 
   dimension: sku_category {
@@ -188,19 +130,45 @@ view: gcp_billing_export_core {
       END  ;;
   }
 
-  dimension: project {
+  dimension: project { # Nested record
     hidden: yes
     sql: ${TABLE}.project ;;
   }
 
-  dimension: service {
+  dimension: service { # Nested record
     hidden: yes
     sql: ${TABLE}.service ;;
   }
 
-  dimension: sku {
+  dimension: sku { # Nested record
     hidden: yes
     sql: ${TABLE}.sku ;;
+  }
+
+  dimension: usage { # Nested record
+    hidden: yes
+    sql: ${TABLE}.usage ;;
+  }
+
+  ### DIMENSION GROUPS
+
+  dimension_group: export {
+    description: "Time at which the billing was exported"
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      month_name,
+      month_num,
+      week_of_year,
+      day_of_month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.export_time ;;
   }
 
   dimension_group: usage_end {
@@ -241,15 +209,57 @@ view: gcp_billing_export_core {
     sql: ${TABLE}.usage_start_time ;;
   }
 
-  dimension: usage {
-    hidden: yes
-    sql: ${TABLE}.usage ;;
+  ### MEASURES
+
+  measure: cost_before_credits {
+    description: "The cost associated to an SKU before any credits, between the Start Date and End Date"
+    type: sum
+    sql: ${TABLE}.cost ;;
+    value_format_name: decimal_2
+    html: {% if currency._value == 'GBP' %}
+            <a href="{{ link }}"> £{{ rendered_value }}</a>
+          {% elsif currency == 'USD' %}
+            <a href="{{ link }}"> ${{ rendered_value }}</a>
+          {% elsif currency == 'EUR' %}
+            <a href="{{ link }}"> €{{ rendered_value }}</a>
+          {% else %}
+            <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
+          {% endif %} ;;
+    drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
   }
 
   measure: total_usage {
     description: "The units of Usage is the dimension 'Resource', please use the two together"
     type: sum
     sql: ${gcp_billing_export_usage.usage} ;;
+  }
+
+  measure: t_cost_hide { # Equal to total_cost, used for NDTs, to avoid circular references in inter-dashboard links/liquid
+    hidden: yes
+    type: number
+    sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: total_cost { # Contains link that references project_name_sort NDT "top_10_projects" field
+    description: "The total cost associated to the SKU with credits applied, between the Start Date and End Date"
+    type: number
+    sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
+    value_format_name: decimal_2
+    html: {% if currency._value == 'GBP' %}
+            <a href="{{ link }}"> £{{ rendered_value }}</a>
+          {% elsif currency == 'USD' %}
+            <a href="{{ link }}"> ${{ rendered_value }}</a>
+          {% elsif currency == 'EUR' %}
+            <a href="{{ link }}"> €{{ rendered_value }}</a>
+          {% else %}
+            <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
+          {% endif %} ;;
+    drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
+    link: {
+      label: "Project Breakdown"
+      url: "/dashboards/block_gcp_billing::billing_by_project?Project={{ project_name_sort.top_10_projects._value | url_encode }}&Time Period=1 months"
+    }
   }
 
 #   ### BELOW Arbitrary Period Comparison Analytical Pattern https://discourse.looker.com/t/arbitrary-period-comparisons/8019
@@ -304,6 +314,5 @@ view: gcp_billing_export_core {
 #   }
 #
 #   ### ABOVE Arbitrary Period Comparison Analytical Pattern https://discourse.looker.com/t/arbitrary-period-comparisons/8019
-
 
 }
