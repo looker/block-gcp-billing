@@ -1,7 +1,17 @@
 view: gcp_billing_export_credits_core {
+
+  ### Field description reference https://cloud.google.com/billing/docs/how-to/export-data-bigquery
+  ### DIMENSIONS
+
+  dimension: credit_id {
+    primary_key: yes
+    hidden: yes
+    sql: CONCAT(CAST(${gcp_billing_export.pk} as STRING), COALESCE(${credit_name}, "0")) ;;
+  }
+
   dimension: credit_amount {
     group_label: "Credits"
-    description: "The amount of credit given to account"
+    description: "Amount of credit given to billing account (always negative)"
     type: number
     sql: ${TABLE}.amount ;;
   }
@@ -13,14 +23,10 @@ view: gcp_billing_export_credits_core {
     sql: ${TABLE}.name ;;
   }
 
-  dimension: credit_id {
-    primary_key: yes
-#     hidden: yes
-    sql: CONCAT(CAST(${gcp_billing_export.pk} as STRING), COALESCE(${credit_name}, "0")) ;;
-  }
+  ### MEASURES
 
   measure: total_credit {
-    description: "The total credit given to the billing account (always negative)"
+    description: "The total credit given to billing account (always negative)"
     type: sum
     sql: ${credit_amount} ;;
     value_format_name: decimal_2
@@ -35,6 +41,5 @@ view: gcp_billing_export_credits_core {
           {% endif %} ;;
     drill_fields: [gcp_billing_export_credits.credit_name,gcp_billing_export_credits.credit_amount]
   }
-
 
 }

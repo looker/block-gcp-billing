@@ -1,4 +1,14 @@
 view: gcp_billing_export_labels_core {
+
+  ### Field description reference https://cloud.google.com/billing/docs/how-to/export-data-bigquery
+  ### DIMENSIONS
+
+  dimension: label_id {
+    primary_key: yes
+    hidden: yes
+    sql: CONCAT(CAST(${gcp_billing_export.pk} as STRING), COALESCE(${label_key}, 0), COALESCE(${label_value}, 0) ;;
+  }
+
   dimension: label_key {
     group_label: "Labels"
     type: string
@@ -9,11 +19,5 @@ view: gcp_billing_export_labels_core {
     group_label: "Labels"
     type: string
     sql: ${TABLE}.value ;;
-  }
-
-  dimension: label_id {
-    primary_key: yes
-    hidden: yes
-    sql: CONCAT(CAST(${gcp_billing_export.pk} as STRING), ${label_key}, ${label_value}) ;;
   }
 }

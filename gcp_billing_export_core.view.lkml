@@ -232,18 +232,29 @@ view: gcp_billing_export_core {
     description: "The units of Usage is the dimension 'Resource', please use the two together"
     type: sum
     sql: ${gcp_billing_export_usage.usage} ;;
+    html: {{value}} {{ gcp_billing_export_usage.unit._value }} ;;
   }
 
-  measure: t_cost_hide { # Equal to total_cost, used for NDTs, to avoid circular references in inter-dashboard links/liquid
-    hidden: yes
+  measure: total_cost { # Does not include link specifications to avoid fanout
+    description: "The total cost associated to the SKU with credits applied, between the Start Date and End Date"
     type: number
     sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
     value_format_name: decimal_2
+    html: {% if currency._value == 'GBP' %}
+            <a href="{{ link }}"> £{{ rendered_value }}</a>
+          {% elsif currency == 'USD' %}
+            <a href="{{ link }}"> ${{ rendered_value }}</a>
+          {% elsif currency == 'EUR' %}
+            <a href="{{ link }}"> €{{ rendered_value }}</a>
+          {% else %}
+            <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
+          {% endif %} ;;
+    drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
   }
 
-  measure: total_cost { # Contains link that references project_name_sort NDT "top_10_projects" field
-    description: "The total cost associated to the SKU with credits applied, between the Start Date and End Date"
+  measure: total_cost_project_link { # Contains link that references project_name_sort NDT "top_10_projects" field
     type: number
+    hidden: yes
     sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
     value_format_name: decimal_2
     html: {% if currency._value == 'GBP' %}
@@ -259,6 +270,27 @@ view: gcp_billing_export_core {
     link: {
       label: "Project Breakdown"
       url: "/dashboards/block_gcp_billing::billing_by_project?Project={{ project_name_sort.top_10_projects._value | url_encode }}&Time Period=1 months"
+    }
+  }
+
+  measure: total_cost_service_link { # Contains link that references project_name_sort NDT "top_10_projects" field
+    type: number
+    hidden: yes
+    sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
+    value_format_name: decimal_2
+    html: {% if currency._value == 'GBP' %}
+            <a href="{{ link }}"> £{{ rendered_value }}</a>
+          {% elsif currency == 'USD' %}
+            <a href="{{ link }}"> ${{ rendered_value }}</a>
+          {% elsif currency == 'EUR' %}
+            <a href="{{ link }}"> €{{ rendered_value }}</a>
+          {% else %}
+            <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
+          {% endif %} ;;
+    drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
+    link: {
+      label: "Project Breakdown"
+      url: "/dashboards/block_gcp_billing::billing_by_project?Project=&Time Period=1 months"
     }
   }
 

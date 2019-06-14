@@ -2,9 +2,9 @@ view: service_name_sort_core {
   derived_table: {
     explore_source: gcp_billing_export {
       column: name { field: gcp_billing_export_service.description }
-      column: t_cost_hide {}
+      column: total_cost {}
       derived_column: rank {
-        sql: RANK() OVER (ORDER BY COALESCE(t_cost_hide, 0) DESC) ;;
+        sql: RANK() OVER (ORDER BY COALESCE(total_cost, 0) DESC) ;;
       }
 
       bind_filters: {
@@ -39,7 +39,7 @@ view: service_name_sort_core {
     hidden: no
     order_by_field: rank_10
   }
-  dimension: t_cost_hide {
+  dimension: total_cost {
     label: "Total Cost"
     description: "The total cost associated to the SKU, between the Start Date and End Date"
     value_format: "#,##0.00"

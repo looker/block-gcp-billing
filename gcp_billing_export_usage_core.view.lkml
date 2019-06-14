@@ -1,6 +1,11 @@
 view: gcp_billing_export_usage_core {
+
+  ### Field description reference https://cloud.google.com/billing/docs/how-to/export-data-bigquery
+### DIMENSIONS
+
   dimension: usage {
     group_label: "Resource Usage"
+    description: "The quantity of usage units used"
     type: number
     sql: ${TABLE}.amount ;;
   }
@@ -8,6 +13,7 @@ view: gcp_billing_export_usage_core {
   dimension: unit {
     group_label: "Resource Usage"
     label: "Resource"
+    description: "The base unit in which resource usage is measured."
     type: string
     sql: ${TABLE}.unit ;;
   }
