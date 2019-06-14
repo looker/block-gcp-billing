@@ -63,10 +63,10 @@
     model: block_gcp_billing
     explore: gcp_billing_export
     type: looker_bar
-    fields: [gcp_billing_export.total_cost, service_name_sort.top_10_services]
+    fields: [service_name_sort.top_10_services, gcp_billing_export.total_cost_service_link]
     filters:
       gcp_billing_export.usage_start_date: 1 months
-    sorts: [gcp_billing_export.total_cost desc]
+    sorts: [gcp_billing_export.total_cost_service_link desc]
     column_limit: 50
     color_application:
       collection_id: b43731d5-dc87-4a8e-b807-635bef3948e7
@@ -104,6 +104,7 @@
     point_style: none
     series_colors:
       gcp_billing_export.total_cost: "#4276BE"
+      gcp_billing_export.total_cost_service_link: "#4276BE"
     show_value_labels: true
     label_density: 25
     x_axis_scale: auto
@@ -144,14 +145,14 @@
     model: block_gcp_billing
     explore: gcp_billing_export
     type: looker_bar
-    fields: [project_name_sort.top_10_projects, gcp_billing_export.total_cost]
+    fields: [project_name_sort.top_10_projects, gcp_billing_export.total_cost_project_link]
     filters:
       gcp_billing_export.usage_start_date: 1 months
     sorts: [project_name_sort.top_10_projects]
     column_limit: 50
     color_application:
       collection_id: b43731d5-dc87-4a8e-b807-635bef3948e7
-      palette_id: 471a8295-662d-46fc-bd2d-2d0acd370c1e
+      palette_id: fb7bb53e-b77b-4ab6-8274-9d420d3d73f3
       options:
         steps: 5
     x_axis_gridlines: false
@@ -186,6 +187,7 @@
     series_colors:
       gcp_billing_export.total_cost: "#72D16D"
       total_cost: "#4276BE"
+      gcp_billing_export.total_cost_project_link: "#72D16D"
     show_value_labels: true
     label_density: 25
     label_color: []
@@ -415,7 +417,8 @@
     model: block_gcp_billing
     explore: gcp_billing_export
     type: looker_column
-    fields: [gcp_billing_export.total_cost, gcp_billing_export.usage_start_date, project_name_sort.top_10_projects]
+    fields: [gcp_billing_export.usage_start_date, project_name_sort.top_10_projects,
+      gcp_billing_export.total_cost_project_link]
     pivots: [project_name_sort.top_10_projects]
     filters:
       gcp_billing_export.usage_start_date: 1 months
@@ -513,13 +516,15 @@
     model: block_gcp_billing
     explore: gcp_billing_export
     type: looker_column
-    fields: [gcp_billing_export.total_cost, gcp_billing_export.usage_start_date, service_name_sort.top_10_services]
+    fields: [gcp_billing_export.usage_start_date, service_name_sort.top_10_services,
+      gcp_billing_export.total_cost_service_link]
     pivots: [service_name_sort.top_10_services]
     filters:
       gcp_billing_export.usage_start_date: 1 months
       gcp_billing_export_project.name: ''
       gcp_billing_export_service.description: ''
-    sorts: [gcp_billing_export.total_cost desc 0, service_name_sort.top_10_services]
+    sorts: [service_name_sort.top_10_services, gcp_billing_export.usage_start_date
+        desc]
     limit: 500
     column_limit: 50
     color_application:
