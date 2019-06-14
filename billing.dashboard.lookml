@@ -412,13 +412,98 @@
     col: 6
     width: 6
     height: 6
+  - title: Billing by Service
+    name: Billing by Service
+    model: block_gcp_billing
+    explore: gcp_billing_export
+    type: looker_column
+    fields: [gcp_billing_export.usage_start_date, service_name_sort.top_10_services,
+      gcp_billing_export.total_cost]
+    pivots: [service_name_sort.top_10_services]
+    filters:
+      gcp_billing_export.usage_start_date: 1 months
+      gcp_billing_export_project.name: ''
+      gcp_billing_export_service.description: ''
+    sorts: [service_name_sort.top_10_services, gcp_billing_export.usage_start_date
+        desc]
+    limit: 500
+    column_limit: 50
+    color_application:
+      collection_id: b43731d5-dc87-4a8e-b807-635bef3948e7
+      palette_id: ccba75a3-58c7-4b9c-a931-4ffc59e79cba
+      options:
+        steps: 5
+    x_axis_gridlines: false
+    y_axis_gridlines: false
+    show_view_names: true
+    y_axes: [{label: '', orientation: left, series: [{axisId: BigQuery - gcp_billing_export.total_cost,
+            id: BigQuery - gcp_billing_export.total_cost, name: BigQuery}, {axisId: Cloud
+              AutoML - gcp_billing_export.total_cost, id: Cloud AutoML - gcp_billing_export.total_cost,
+            name: Cloud AutoML}, {axisId: Cloud Composer - gcp_billing_export.total_cost,
+            id: Cloud Composer - gcp_billing_export.total_cost, name: Cloud Composer},
+          {axisId: Cloud Dataflow - gcp_billing_export.total_cost, id: Cloud Dataflow
+              - gcp_billing_export.total_cost, name: Cloud Dataflow}, {axisId: Cloud
+              DNS - gcp_billing_export.total_cost, id: Cloud DNS - gcp_billing_export.total_cost,
+            name: Cloud DNS}, {axisId: Cloud Machine Learning Engine - gcp_billing_export.total_cost,
+            id: Cloud Machine Learning Engine - gcp_billing_export.total_cost, name: Cloud
+              Machine Learning Engine}, {axisId: Cloud SQL - gcp_billing_export.total_cost,
+            id: Cloud SQL - gcp_billing_export.total_cost, name: Cloud SQL}, {axisId: Cloud
+              Storage - gcp_billing_export.total_cost, id: Cloud Storage - gcp_billing_export.total_cost,
+            name: Cloud Storage}, {axisId: Compute Engine - gcp_billing_export.total_cost,
+            id: Compute Engine - gcp_billing_export.total_cost, name: Compute Engine},
+          {axisId: Maps API - gcp_billing_export.total_cost, id: Maps API - gcp_billing_export.total_cost,
+            name: Maps API}, {axisId: Other - gcp_billing_export.total_cost, id: Other
+              - gcp_billing_export.total_cost, name: Other}], showLabels: false, showValues: false,
+        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    hidden_series: []
+    legend_position: center
+    colors: ['palette: Mixed Dark']
+    series_types: {}
+    point_style: none
+    series_colors: {}
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    show_null_points: true
+    interpolation: linear
+    custom_color_enabled: false
+    custom_color: forestgreen
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    listen: {}
+    row: 6
+    col: 12
+    width: 12
+    height: 11
   - title: Billing by Project
     name: Billing by Project
     model: block_gcp_billing
     explore: gcp_billing_export
     type: looker_column
     fields: [gcp_billing_export.usage_start_date, project_name_sort.top_10_projects,
-      gcp_billing_export.total_cost_project_link]
+      gcp_billing_export.total_cost]
     pivots: [project_name_sort.top_10_projects]
     filters:
       gcp_billing_export.usage_start_date: 1 months
@@ -509,91 +594,6 @@
     listen: {}
     row: 6
     col: 0
-    width: 12
-    height: 11
-  - title: Billing by Service
-    name: Billing by Service
-    model: block_gcp_billing
-    explore: gcp_billing_export
-    type: looker_column
-    fields: [gcp_billing_export.usage_start_date, service_name_sort.top_10_services,
-      gcp_billing_export.total_cost_service_link]
-    pivots: [service_name_sort.top_10_services]
-    filters:
-      gcp_billing_export.usage_start_date: 1 months
-      gcp_billing_export_project.name: ''
-      gcp_billing_export_service.description: ''
-    sorts: [service_name_sort.top_10_services, gcp_billing_export.usage_start_date
-        desc]
-    limit: 500
-    column_limit: 50
-    color_application:
-      collection_id: b43731d5-dc87-4a8e-b807-635bef3948e7
-      palette_id: ccba75a3-58c7-4b9c-a931-4ffc59e79cba
-      options:
-        steps: 5
-    x_axis_gridlines: false
-    y_axis_gridlines: false
-    show_view_names: true
-    y_axes: [{label: '', orientation: left, series: [{axisId: BigQuery - gcp_billing_export.total_cost,
-            id: BigQuery - gcp_billing_export.total_cost, name: BigQuery}, {axisId: Cloud
-              AutoML - gcp_billing_export.total_cost, id: Cloud AutoML - gcp_billing_export.total_cost,
-            name: Cloud AutoML}, {axisId: Cloud Composer - gcp_billing_export.total_cost,
-            id: Cloud Composer - gcp_billing_export.total_cost, name: Cloud Composer},
-          {axisId: Cloud Dataflow - gcp_billing_export.total_cost, id: Cloud Dataflow
-              - gcp_billing_export.total_cost, name: Cloud Dataflow}, {axisId: Cloud
-              DNS - gcp_billing_export.total_cost, id: Cloud DNS - gcp_billing_export.total_cost,
-            name: Cloud DNS}, {axisId: Cloud Machine Learning Engine - gcp_billing_export.total_cost,
-            id: Cloud Machine Learning Engine - gcp_billing_export.total_cost, name: Cloud
-              Machine Learning Engine}, {axisId: Cloud SQL - gcp_billing_export.total_cost,
-            id: Cloud SQL - gcp_billing_export.total_cost, name: Cloud SQL}, {axisId: Cloud
-              Storage - gcp_billing_export.total_cost, id: Cloud Storage - gcp_billing_export.total_cost,
-            name: Cloud Storage}, {axisId: Compute Engine - gcp_billing_export.total_cost,
-            id: Compute Engine - gcp_billing_export.total_cost, name: Compute Engine},
-          {axisId: Maps API - gcp_billing_export.total_cost, id: Maps API - gcp_billing_export.total_cost,
-            name: Maps API}, {axisId: Other - gcp_billing_export.total_cost, id: Other
-              - gcp_billing_export.total_cost, name: Other}], showLabels: false, showValues: false,
-        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: normal
-    limit_displayed_rows: false
-    hidden_series: []
-    legend_position: center
-    colors: ['palette: Mixed Dark']
-    series_types: {}
-    point_style: none
-    series_colors: {}
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: true
-    show_silhouette: false
-    totals_color: "#808080"
-    show_null_points: true
-    interpolation: linear
-    custom_color_enabled: false
-    custom_color: forestgreen
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    listen: {}
-    row: 6
-    col: 12
     width: 12
     height: 11
   filters:

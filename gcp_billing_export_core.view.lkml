@@ -235,7 +235,7 @@ view: gcp_billing_export_core {
     html: {{value}} {{ gcp_billing_export_usage.unit._value }} ;;
   }
 
-  measure: total_cost { # Does not include link specifications to avoid fanout
+  measure: total_cost { # in_query in link specifications to avoid fanout
     description: "The total cost associated to the SKU with credits applied, between the Start Date and End Date"
     type: number
     sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
@@ -250,47 +250,9 @@ view: gcp_billing_export_core {
             <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
           {% endif %} ;;
     drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
-  }
-
-  measure: total_cost_project_link { # Contains link that references project_name_sort NDT "top_10_projects" field
-    type: number
-    hidden: yes
-    sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
-    value_format_name: decimal_2
-    html: {% if currency._value == 'GBP' %}
-            <a href="{{ link }}"> £{{ rendered_value }}</a>
-          {% elsif currency == 'USD' %}
-            <a href="{{ link }}"> ${{ rendered_value }}</a>
-          {% elsif currency == 'EUR' %}
-            <a href="{{ link }}"> €{{ rendered_value }}</a>
-          {% else %}
-            <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
-          {% endif %} ;;
-    drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
     link: {
-      label: "Project Breakdown"
-      url: "/dashboards/block_gcp_billing::billing_by_project?Project={{ project_name_sort.top_10_projects._value | url_encode }}&Time Period=1 months"
-    }
-  }
-
-  measure: total_cost_service_link { # Contains link that references project_name_sort NDT "top_10_projects" field
-    type: number
-    hidden: yes
-    sql: ${cost_before_credits} + ${gcp_billing_export_credits.total_credit} ;;
-    value_format_name: decimal_2
-    html: {% if currency._value == 'GBP' %}
-            <a href="{{ link }}"> £{{ rendered_value }}</a>
-          {% elsif currency == 'USD' %}
-            <a href="{{ link }}"> ${{ rendered_value }}</a>
-          {% elsif currency == 'EUR' %}
-            <a href="{{ link }}"> €{{ rendered_value }}</a>
-          {% else %}
-            <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
-          {% endif %} ;;
-    drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
-    link: {
-      label: "Project Breakdown"
-      url: "/dashboards/block_gcp_billing::billing_by_project?Project=&Time Period=1 months"
+      label: "{% if project_name_sort.top_10_projects._in_query %}Project Breakdown{% elsif service_name_sort.top_10_services._in_query %}Service Breakdown{% else %}{% endif %}"
+      url: "{% if project_name_sort.top_10_projects._in_query %}/dashboards/block_gcp_billing::billing_by_project?Project={{ project_name_sort.top_10_projects._value | url_encode }}&Time Period=1 months{% elsif service_name_sort.top_10_services._in_query %}/dashboards/block_gcp_billing::billing_by_service?Service={{ service_name_sort.top_10_services._value | url_encode }}&Time Period=1 months{% else %}{% endif %}"
     }
   }
 
