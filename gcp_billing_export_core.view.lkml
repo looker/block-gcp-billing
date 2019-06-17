@@ -51,6 +51,7 @@ view: gcp_billing_export_core {
   }
 
   dimension: billing_date {
+    description: "Use with filter only field 'Date View' to alter granularity"
     type: string
     label_from_parameter: date_view
     sql: EXTRACT({% parameter date_view %} from ${usage_start_raw}) ;;
