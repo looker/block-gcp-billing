@@ -1,3 +1,10 @@
+include: "//@{CONFIG_PROJECT_NAME}/gcp_billing_export.view"
+
+view: gcp_billing_export_labels {
+  extends: [gcp_billing_export_labels_config]
+}
+
+
 view: gcp_billing_export_labels_core {
 
   ### Field description reference https://cloud.google.com/billing/docs/how-to/export-data-bigquery

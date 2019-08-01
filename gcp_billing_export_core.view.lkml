@@ -1,3 +1,9 @@
+include: "//@{CONFIG_PROJECT_NAME}/gcp_billing_export.view"
+
+view: gcp_billing_export {
+  extends: [gcp_billing_export_config]
+}
+
 view: gcp_billing_export_core {
   derived_table: {
     sql:
