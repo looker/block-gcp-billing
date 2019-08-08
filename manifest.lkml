@@ -1,5 +1,7 @@
 project_name: "block-gcp-billing"
 
+################ Constants ################
+
 constant: CONNECTION_NAME {
   value: "gcp_logging"
   export: override_required
@@ -21,7 +23,16 @@ constant: CONFIG_PROJECT_NAME {
   export: override_required
 }
 
+################ Dependencies ################
 
 local_dependency: {
   project: "@{CONFIG_PROJECT_NAME}"
+
+  override_constant: SCHEMA_NAME {
+    value: "@{SCHEMA_NAME}"
+  }
+
+  override_constant: BILLING_EXPORT_TABLE_NAME {
+    value: "@{BILLING_EXPORT_TABLE_NAME}"
+  }
 }
