@@ -1,4 +1,11 @@
 {
+  "label": "Google Cloud Platform Billing",
+  "category_label": "Tools",
+  "branding": {
+    "image_uri": "https://wwwstatic-a.lookercdn.com/blocks/logos/datatonic_google_cloud.png",
+    "tagline": "Monitor and optimize your cloud spend with the GCP Billing Block"
+  },
+
     "constants": {
         "CONFIG_PROJECT_NAME": {
             "label": "Config Project Name",
