@@ -8,21 +8,18 @@
 
     "constants": {
         "CONFIG_PROJECT_NAME": {
-            "label": "Config Project Name",
-            "description": "Name of the Config Project"
+            "label": "Config Project Name"
         },
         "CONNECTION_NAME": {
             "label": "Connection name",
-            "description": "Name of Connection from Admin panel",
             "value_constraint": "connection"
         },
         "SCHEMA_NAME": {
-            "label": "Schema Name",
-            "description": "Name of Schema"
+            "label": "Schema Name"
         },
         "BILLING_EXPORT_TABLE_NAME": {
             "label": "Billing Export Table Name",
-            "description": "Name of Export Table"
+            "description": "Name of Export Table (typically starts with gcp_billing_export_...)"
         }
     },
     "models": [
@@ -35,7 +32,7 @@
         {
             "git_uri": "git://github.com/looker/block-gcp-billing-config.git",
             "git_ref": "6f077985c094d830769eb9be3a3a5b946c66447c",
-            "label": "Block GCP Billing Config",
+            "label": "Google Cloud Platform Billing Config",
             "constant_name": "CONFIG_PROJECT_NAME"
         }
     ]
