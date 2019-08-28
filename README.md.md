@@ -4,7 +4,7 @@ This repository contains a Looker block for analysing **Google Cloud Platform lo
 
 ## Getting Started
 
-Let's run through the steps in both the Google Cloud Platform, and in Looker, to setup the logging exports and the Looker block.
+Let's run through the steps in Google Cloud Platform to setup the logging exports and the Looker block.
 
 ### GCP Setup
 
