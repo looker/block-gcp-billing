@@ -14,7 +14,7 @@
     limit: 500
     column_limit: 50
     dynamic_fields: [{table_calculation: budget, label: Budget, expression: '750',
-        value_format: !!null '', value_format_name: gbp_0, _kind_hint: dimension,
+        value_format: !!null '', value_format_name: !!null '', _kind_hint: dimension,
         _type_hint: number}]
     custom_color_enabled: false
     custom_color: forestgreen
@@ -42,7 +42,7 @@
     limit: 500
     column_limit: 50
     dynamic_fields: [{table_calculation: budget, label: Budget, expression: '750',
-        value_format: !!null '', value_format_name: gbp_0, _kind_hint: dimension,
+        value_format: !!null '', value_format_name: !!null '', _kind_hint: dimension,
         _type_hint: number}]
     custom_color_enabled: false
     custom_color: forestgreen
@@ -206,7 +206,7 @@
         value_format: !!null '', value_format_name: !!null '', _kind_hint: dimension,
         _type_hint: number}, {table_calculation: total_predicted_costs, label: Total
           Predicted Costs, expression: 'max(${predicted_cumulative_cost})', value_format: !!null '',
-        value_format_name: gbp_0, _kind_hint: dimension, _type_hint: number}]
+        value_format_name: !!null '', _kind_hint: dimension, _type_hint: number}]
     custom_color_enabled: false
     custom_color: forestgreen
     show_single_value_title: true

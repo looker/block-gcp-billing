@@ -2,7 +2,6 @@ explore: gcp_billing_export_core {
   extension: required
   view_label: "GCP Billing"
   label: "GCP Billing"
-  extension: required
 
   join: gcp_billing_export_project {
     view_label: "GCP Billing"
