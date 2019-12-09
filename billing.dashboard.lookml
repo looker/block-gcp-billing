@@ -206,7 +206,7 @@
         value_format: !!null '', value_format_name: !!null '', _kind_hint: dimension,
         _type_hint: number}, {table_calculation: total_predicted_costs, label: Total
           Predicted Costs, expression: 'max(${predicted_cumulative_cost})', value_format: !!null '',
-        value_format_name: !!null '', _kind_hint: dimension, _type_hint: number}]
+        value_format_name: decimal_2, _kind_hint: dimension, _type_hint: number}]
     custom_color_enabled: false
     custom_color: forestgreen
     show_single_value_title: true
