@@ -31,7 +31,7 @@
     "auxiliary_projects": [
         {
             "git_uri": "git://github.com/looker/block-gcp-billing-config.git",
-            "git_ref": "6f077985c094d830769eb9be3a3a5b946c66447c",
+            "git_ref": "ad5ced597ec2da82e4c79acbbf5fc31dee6d5543",
             "label": "Google Cloud Platform Billing Config",
             "constant_name": "CONFIG_PROJECT_NAME"
         }
