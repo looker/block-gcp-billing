@@ -26,6 +26,7 @@ view: gcp_billing_export_project_core {
     label: "Project Name"
     description: "The name of the project that generated the billing data."
     type: string
+    full_suggestions: yes
     sql: ${TABLE}.name;;
     drill_fields: [gcp_billing_export_service.description, gcp_billing_export.sku_category, gcp_billing_export_sku.description]
   }

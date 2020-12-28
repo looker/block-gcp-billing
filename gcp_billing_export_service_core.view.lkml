@@ -22,6 +22,7 @@ view: gcp_billing_export_service_core {
     description: "The Google Cloud Platform service that reported the billing data."
     type: string
     sql: ${TABLE}.description ;;
+    full_suggestions: yes
     drill_fields: [gcp_billing_export_project.name, gcp_billing_export.sku_category, gcp_billing_export_sku.description]
   }
 

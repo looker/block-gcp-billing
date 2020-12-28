@@ -8,8 +8,6 @@
     explore: gcp_billing_export
     type: single_value
     fields: [gcp_billing_export_project.name_filter]
-    filters:
-      gcp_billing_export.date_filter: 7 days
     limit: 500
     query_timezone: America/Los_Angeles
     custom_color_enabled: true
@@ -93,8 +91,6 @@
     explore: gcp_billing_export
     type: single_value
     fields: [gcp_billing_export.total_cost, gcp_billing_export_project.name, gcp_billing_export_project.project_compare]
-    filters:
-      gcp_billing_export.date_filter: 1 months
     sorts: [gcp_billing_export.total_cost desc]
     limit: 500
     column_limit: 50
@@ -218,8 +214,6 @@
     type: single_value
     fields: [gcp_billing_export.total_cost, gcp_billing_export_project.name, gcp_billing_export_project.project_compare,
       gcp_billing_export_credits.total_credit]
-    filters:
-      gcp_billing_export.date_filter: 1 months
     sorts: [gcp_billing_export.total_cost desc]
     limit: 500
     column_limit: 50
