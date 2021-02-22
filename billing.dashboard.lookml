@@ -356,28 +356,7 @@
     x_axis_gridlines: false
     y_axis_gridlines: false
     show_view_names: false
-    y_axes: [{label: '', orientation: left, series: [{axisId: datatonic-uk-jlp-phase-2
-              - 1 - gcp_billing_export.total_cost, id: datatonic-uk-jlp-phase-2 -
-              1 - gcp_billing_export.total_cost, name: datatonic-uk-jlp-phase-2},
-          {axisId: datatonic-uk-sandbox - 2 - gcp_billing_export.total_cost, id: datatonic-uk-sandbox
-              - 2 - gcp_billing_export.total_cost, name: datatonic-uk-sandbox}, {
-            axisId: datatonic-uk-vf-bdp-internal - 3 - gcp_billing_export.total_cost,
-            id: datatonic-uk-vf-bdp-internal - 3 - gcp_billing_export.total_cost,
-            name: datatonic-uk-vf-bdp-internal}, {axisId: datatonic-uk-jlp-ml - 4
-              - gcp_billing_export.total_cost, id: datatonic-uk-jlp-ml - 4 - gcp_billing_export.total_cost,
-            name: datatonic-uk-jlp-ml}, {axisId: datatonic-uk-ao-poc - 5 - gcp_billing_export.total_cost,
-            id: datatonic-uk-ao-poc - 5 - gcp_billing_export.total_cost, name: datatonic-uk-ao-poc},
-          {axisId: datatonic-www-prod - 6 - gcp_billing_export.total_cost, id: datatonic-www-prod
-              - 6 - gcp_billing_export.total_cost, name: datatonic-www-prod}, {axisId: datatonic-poc-btee
-              - 7 - gcp_billing_export.total_cost, id: datatonic-poc-btee - 7 - gcp_billing_export.total_cost,
-            name: datatonic-poc-btee}, {axisId: datatonic-poc-tfl - 8 - gcp_billing_export.total_cost,
-            id: datatonic-poc-tfl - 8 - gcp_billing_export.total_cost, name: datatonic-poc-tfl},
-          {axisId: datatonic-external-training - 9 - gcp_billing_export.total_cost,
-            id: datatonic-external-training - 9 - gcp_billing_export.total_cost, name: datatonic-external-training},
-          {axisId: datatonic-ops - 10 - gcp_billing_export.total_cost, id: datatonic-ops
-              - 10 - gcp_billing_export.total_cost, name: datatonic-ops}, {axisId: Other
-              - 11 - gcp_billing_export.total_cost, id: Other - 11 - gcp_billing_export.total_cost,
-            name: Other}], showLabels: false, showValues: false, unpinAxis: false,
+    y_axes: [{label: '', orientation: left, showLabels: false, showValues: false, unpinAxis: false,
         tickDensity: default, type: linear}]
     show_y_axis_labels: true
     show_y_axis_ticks: true
