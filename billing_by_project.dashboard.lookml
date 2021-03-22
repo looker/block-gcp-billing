@@ -1,4 +1,5 @@
 - dashboard: billing_by_project
+  preferred_viewer: dashboards-next
   title: Billing By Project
   layout: newspaper
   elements:

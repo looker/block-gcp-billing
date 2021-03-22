@@ -1,4 +1,5 @@
 - dashboard: billing
+  preferred_viewer: dashboards-next
   title: Billing
   layout: newspaper
   elements:
