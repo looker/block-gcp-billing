@@ -1,0 +1,39 @@
+{
+  "label": "Google Cloud Platform Billing",
+  "category_label": "Models",
+  "branding": {
+    "image_uri": "https://marketplace-api.looker.com/block-icons/google-cloud.png",
+    "tagline": "Monitor and optimize your cloud spend with the GCP Billing Block"
+  },
+
+    "constants": {
+        "CONFIG_PROJECT_NAME": {
+            "label": "Config Project Name"
+        },
+        "CONNECTION_NAME": {
+            "label": "Connection name",
+            "value_constraint": "connection"
+        },
+        "SCHEMA_NAME": {
+            "label": "Schema Name"
+        },
+        "BILLING_EXPORT_TABLE_NAME": {
+            "label": "Billing Export Table Name",
+            "description": "Name of Export Table (typically starts with gcp_billing_export_...)"
+        }
+    },
+    "models": [
+        {
+            "name": "block_gcp_billing",
+            "connection_constant": "CONNECTION_NAME"
+        }
+    ],
+    "auxiliary_projects": [
+        {
+            "git_uri": "git://github.com/looker/block-gcp-billing-config.git",
+            "git_ref": "944baa8652906b88c041e743db8c9b59925554a2",
+            "label": "Google Cloud Platform Billing Config",
+            "constant_name": "CONFIG_PROJECT_NAME"
+        }
+    ]
+}
