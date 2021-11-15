@@ -7,9 +7,6 @@
   },
 
     "constants": {
-        "CONFIG_PROJECT_NAME": {
-            "label": "Config Project Name"
-        },
         "CONNECTION_NAME": {
             "label": "Connection name",
             "value_constraint": "connection"
@@ -24,16 +21,8 @@
     },
     "models": [
         {
-            "name": "block_gcp_billing",
+            "name": "block_gcp_billing_v2",
             "connection_constant": "CONNECTION_NAME"
-        }
-    ],
-    "auxiliary_projects": [
-        {
-            "git_uri": "git://github.com/looker/block-gcp-billing-config.git",
-            "git_ref": "944baa8652906b88c041e743db8c9b59925554a2",
-            "label": "Google Cloud Platform Billing Config",
-            "constant_name": "CONFIG_PROJECT_NAME"
         }
     ]
 }

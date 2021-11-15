@@ -5,7 +5,7 @@
   elements:
   - title: Total Billing (Last Month)
     name: Total Billing (Last Month)
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     type: single_value
     fields: [gcp_billing_export.total_cost]
@@ -33,7 +33,7 @@
     height: 6
   - title: Total Billing (This Month)
     name: Total Billing (This Month)
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     type: single_value
     fields: [gcp_billing_export.total_cost]
@@ -61,7 +61,7 @@
     height: 6
   - title: Billing (This Year)
     name: Billing (This Year)
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     type: single_value
     fields: [gcp_billing_export.total_cost]
@@ -108,7 +108,7 @@
     height: 6
   - title: Billing by Month
     name: Billing by Month
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     type: looker_column
     fields: [gcp_billing_export.total_cost, gcp_billing_export.usage_start_month]
@@ -169,7 +169,7 @@
     height: 8
   - title: Predicted Total Monthly Costs
     name: Predicted Total Monthly Costs
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     type: single_value
     fields: [gcp_billing_export.usage_start_date, gcp_billing_export.total_cost]
@@ -249,7 +249,7 @@
     height: 6
   - title: Billing by Service
     name: Billing by Service
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     type: looker_column
     fields: [gcp_billing_export.usage_start_date, service_name_sort.top_10_services,
@@ -334,7 +334,7 @@
     height: 11
   - title: Billing by Project
     name: Billing by Project
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     type: looker_column
     fields: [gcp_billing_export.usage_start_date, project_name_sort.top_10_projects,
@@ -412,7 +412,7 @@
     height: 11
   - title: Top 10 Billing by Project (This Month)
     name: Top 10 Billing by Project (This Month)
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     type: looker_bar
     fields: [project_name_sort.top_10_projects, gcp_billing_export.total_cost]
@@ -496,7 +496,7 @@
     height: 8
   - title: Top 10 Billing by Service (This Month)
     name: Top 10 Billing by Service (This Month)
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     type: looker_bar
     fields: [service_name_sort.top_10_services, gcp_billing_export.total_cost]
@@ -583,7 +583,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     listens_to_filters: []
     field: gcp_billing_export_service.description
@@ -593,7 +593,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: block_gcp_billing
+    model: block_gcp_billing_v2
     explore: gcp_billing_export
     listens_to_filters: []
     field: gcp_billing_export_project.name

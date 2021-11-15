@@ -34,3 +34,7 @@ Note: Recently the GCP Billing Export moved from Beta to v1. If you activated th
 2. Create a new **Database Connection** in Looker to connect to the BigQuery dataset: follow the steps [here](https://docs.looker.com/setup-and-management/database-config/google-bigquery) to create a service account in GCP and add a new connection to Looker, ensure you use **BigQuery standard SQL**
 
 You should now be ready to start monitoring your GCP usage.
+
+## Block Customization
+This block uses Refinements to facilitate customization of most LookML components included. These refinements can be used to add new content, or update existing content (such as the link and drill_field parameters on the total_cost measure.)
+For more information on using refinements to customize marketplace blocks, please see [this documentation](https://docs.looker.com/data-modeling/marketplace/customize-blocks).

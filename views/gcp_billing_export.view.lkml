@@ -1,10 +1,4 @@
-include: "//@{CONFIG_PROJECT_NAME}/gcp_billing_export.view"
-
 view: gcp_billing_export {
-  extends: [gcp_billing_export_config]
-}
-
-view: gcp_billing_export_core {
   derived_table: {
     sql:
       SELECT
@@ -256,5 +250,11 @@ view: gcp_billing_export_core {
           {% else %}
             <a href="{{ link }}"> {{ rendered_value }} {{ currency._value }}</a>
           {% endif %} ;;
+    link: {
+      label: "{% if project_name_sort.top_10_projects._in_query %}Project Breakdown{% elsif service_name_sort.top_10_services._in_query %}Service Breakdown{% else %}{% endif %}"
+      url: "{% if project_name_sort.top_10_projects._in_query %}/dashboards/block_gcp_billing_v2::billing_by_project?Project={{ project_name_sort.top_10_projects._value | url_encode }}&Time Period=1 months{% elsif service_name_sort.top_10_services._in_query %}/dashboards/block_gcp_billing_v2::billing_by_service?Service={{ service_name_sort.top_10_services._value | url_encode }}&Time Period=1 months{% else %}{% endif %}"
+    }
+    drill_fields: [gcp_billing_export_project.name, gcp_billing_export_service.description, sku_category, gcp_billing_export_sku.description, gcp_billing_export_usage.unit, gcp_billing_export_usage.total_usage, total_cost]
+
   }
 }
