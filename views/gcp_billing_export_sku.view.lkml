@@ -1,11 +1,4 @@
-include: "//@{CONFIG_PROJECT_NAME}/gcp_billing_export.view"
-
 view: gcp_billing_export_sku {
-  extends: [gcp_billing_export_sku_config]
-}
-
-
-view: gcp_billing_export_sku_core {
 
   ### Field description reference https://cloud.google.com/billing/docs/how-to/export-data-bigquery
 ### DIMENSIONS

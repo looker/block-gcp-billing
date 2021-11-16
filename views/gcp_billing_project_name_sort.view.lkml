@@ -1,11 +1,4 @@
-include: "//@{CONFIG_PROJECT_NAME}/gcp_billing_export.view"
-
 view: project_name_sort {
-  extends: [project_name_sort_config]
-}
-
-
-view: project_name_sort_core {
 
   ### NDT created to achieve ordering in visualization based on total cost
 

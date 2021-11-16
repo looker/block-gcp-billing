@@ -1,5 +1,6 @@
-explore: gcp_billing_export_core {
-  extension: required
+include: "/views/*.view"
+
+explore: gcp_billing_export {
   view_label: "GCP Billing"
   label: "GCP Billing"
 

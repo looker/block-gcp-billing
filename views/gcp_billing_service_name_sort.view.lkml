@@ -1,10 +1,4 @@
-include: "//@{CONFIG_PROJECT_NAME}/gcp_billing_export.view"
-
 view: service_name_sort {
-  extends: [service_name_sort_config]
-}
-
-view: service_name_sort_core {
   derived_table: {
     explore_source: gcp_billing_export {
       column: name { field: gcp_billing_export_service.description }
